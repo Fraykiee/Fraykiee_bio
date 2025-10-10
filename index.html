@@ -157,9 +157,160 @@
     }
 
     .card, .avatar, h1, .role, .bio, .s-btn, .meta { position: relative; z-index: 1; }
+
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px transparent;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .music-control:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px var(--glow-color);
+      transform: scale(1.1);
+    }
+
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      background: rgba(15, 20, 25, 0.7);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      z-index: 100;
+    }
+
+    .song-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .song-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--glow-color);
+    }
+
+    .song-time {
+      font-size: 12px;
+      color: var(--muted);
+      text-shadow: 0 0 5px var(--glow-color);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--glow-color));
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px var(--glow-color);
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--glow-color);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .progress-container:hover .progress-bar::after {
+      opacity: 1;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .music-loading {
+      position: fixed;
+      bottom: 70px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .music-loading.show {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="background-music.flac" type="audio/flac">
+    <source src="background-music.mp3" type="audio/mpeg">
+    <source src="background-music.ogg" type="audio/ogg">
+    Ваш браузер не поддерживает аудио элемент.
+  </audio>
+
+  <div class="music-control" id="musicToggle">
+    <i class="fas fa-play" id="musicIcon"></i>
+  </div>
+
+  <div class="music-player" id="musicPlayer">
+    <div class="song-info">
+      <span class="song-title">Pathetic - Society</span>
+    </div>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="time-display">
+      <span id="currentTime">00:00</span>
+      <span id="durationTime">03:34</span>
+    </div>
+  </div>
+
+  <div class="music-loading" id="musicLoading">Loading music...</div>
+
   <canvas class="snow"></canvas>
   <div class="card">
     <div class="meta-top">
@@ -167,7 +318,6 @@
       <div class="meta">#3</div>
     </div>
 
-    <!-- Ускоренная загрузка аватарки -->
     <div class="avatar"><img src="./pfp.jpg" alt="avatar"></div>
     <h1>Fraykiee</h1>
 
@@ -243,6 +393,120 @@
       requestAnimationFrame(loop);
     }
     loop();
+
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicLoading = document.getElementById('musicLoading');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationTimeEl = document.getElementById('durationTime');
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function updateProgress() {
+      const currentTime = bgMusic.currentTime;
+      const duration = bgMusic.duration;
+      
+      if (duration) {
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+        currentTimeEl.textContent = formatTime(currentTime);
+        durationTimeEl.textContent = formatTime(duration);
+      }
+    }
+
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = bgMusic.duration;
+      
+      if (duration) {
+        bgMusic.currentTime = (clickX / width) * duration;
+      }
+    }
+
+    function autoPlayMusic() {
+      musicLoading.classList.add('show');
+      
+      bgMusic.volume = 0.5;
+      
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          musicIcon.className = 'fas fa-pause';
+          musicLoading.classList.remove('show');
+          console.log('Музыка успешно запущена автоматически');
+        }).catch(error => {
+          console.log('Автовоспроизведение заблокировано. Ждем взаимодействия пользователя.');
+          musicIcon.className = 'fas fa-play';
+          musicLoading.classList.remove('show');
+          
+          musicLoading.textContent = 'Click to play music';
+          musicLoading.classList.add('show');
+          
+          setTimeout(() => {
+            musicLoading.classList.remove('show');
+          }, 3000);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+   
+     setTimeout(autoPlayMusic, 500);
+      
+      setInterval(updateProgress, 100);
+    });
+
+    progressContainer.addEventListener('click', setProgress);
+
+    document.addEventListener('click', function firstClick() {
+      if (bgMusic.paused) {
+        autoPlayMusic();
+      }
+      document.removeEventListener('click', firstClick);
+    });
+
+    musicToggle.addEventListener('click', function(event) {
+      event.stopPropagation();
+      
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          musicIcon.className = 'fas fa-pause';
+        });
+      } else {
+        bgMusic.pause();
+        musicIcon.className = 'fas fa-play';
+      }
+    });
+
+    bgMusic.addEventListener('error', function(e) {
+      console.error('Ошибка загрузки музыки:', e);
+      musicLoading.textContent = 'Music load error';
+      musicLoading.classList.add('show');
+      
+      setTimeout(() => {
+        musicLoading.classList.remove('show');
+      }, 3000);
+    });
+
+    bgMusic.addEventListener('canplaythrough', function() {
+      console.log('Музыка готова к воспроизведению');
+      musicLoading.classList.remove('show');
+      
+      if (bgMusic.duration) {
+        durationTimeEl.textContent = formatTime(bgMusic.duration);
+      }
+    });
+
+    bgMusic.addEventListener('timeupdate', updateProgress);
   </script>
 </body>
 </html>
