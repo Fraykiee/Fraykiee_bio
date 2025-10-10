@@ -282,6 +282,24 @@
     .music-loading.show {
       opacity: 1;
     }
+
+    /* Стили для мобильных устройств */
+    @media (max-width: 768px) {
+      .music-player {
+        width: calc(100% - 80px);
+        right: 20px;
+      }
+      
+      .music-control {
+        bottom: 20px;
+        left: 20px;
+      }
+      
+      .music-loading {
+        bottom: 70px;
+        left: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -403,6 +421,9 @@
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
 
+    // Флаг для отслеживания первого взаимодействия
+    let userInteracted = false;
+
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
@@ -422,6 +443,8 @@
     }
 
     function setProgress(e) {
+      if (!userInteracted) return;
+      
       const width = this.clientWidth;
       const clickX = e.offsetX;
       const duration = bgMusic.duration;
@@ -431,7 +454,9 @@
       }
     }
 
-    function autoPlayMusic() {
+    function playMusic() {
+      if (!userInteracted) return;
+      
       musicLoading.classList.add('show');
       
       bgMusic.volume = 0.5;
@@ -442,9 +467,9 @@
         playPromise.then(() => {
           musicIcon.className = 'fas fa-pause';
           musicLoading.classList.remove('show');
-          console.log('Музыка успешно запущена автоматически');
+          console.log('Музыка успешно запущена');
         }).catch(error => {
-          console.log('Автовоспроизведение заблокировано. Ждем взаимодействия пользователя.');
+          console.log('Ошибка воспроизведения:', error);
           musicIcon.className = 'fas fa-play';
           musicLoading.classList.remove('show');
           
@@ -458,32 +483,77 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-   
-     setTimeout(autoPlayMusic, 500);
-      
-      setInterval(updateProgress, 100);
-    });
+    function pauseMusic() {
+      bgMusic.pause();
+      musicIcon.className = 'fas fa-play';
+    }
 
-    progressContainer.addEventListener('click', setProgress);
-
-    document.addEventListener('click', function firstClick() {
-      if (bgMusic.paused) {
-        autoPlayMusic();
+    function toggleMusic() {
+      if (!userInteracted) {
+        // Первое взаимодействие - устанавливаем флаг
+        userInteracted = true;
+        musicLoading.textContent = 'Loading music...';
+        musicLoading.classList.add('show');
+        
+        // Пытаемся воспроизвести
+        bgMusic.volume = 0.5;
+        const playPromise = bgMusic.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            musicIcon.className = 'fas fa-pause';
+            musicLoading.classList.remove('show');
+          }).catch(error => {
+            console.log('Ошибка воспроизведения:', error);
+            musicIcon.className = 'fas fa-play';
+            musicLoading.textContent = 'Error playing music';
+            setTimeout(() => {
+              musicLoading.classList.remove('show');
+            }, 3000);
+          });
+        }
+      } else {
+        // Последующие взаимодействия - обычное переключение
+        if (bgMusic.paused) {
+          playMusic();
+        } else {
+          pauseMusic();
+        }
       }
-      document.removeEventListener('click', firstClick);
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+      // Обновляем прогресс каждые 100мс
+      setInterval(updateProgress, 100);
+      
+      // Показываем подсказку на мобильных устройствах
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        setTimeout(() => {
+          if (!userInteracted) {
+            musicLoading.textContent = 'Tap to play music';
+            musicLoading.classList.add('show');
+            setTimeout(() => {
+              musicLoading.classList.remove('show');
+            }, 5000);
+          }
+        }, 2000);
+      }
     });
+
+    // Обработчики событий
+    progressContainer.addEventListener('click', setProgress);
 
     musicToggle.addEventListener('click', function(event) {
       event.stopPropagation();
-      
-      if (bgMusic.paused) {
-        bgMusic.play().then(() => {
-          musicIcon.className = 'fas fa-pause';
-        });
-      } else {
-        bgMusic.pause();
-        musicIcon.className = 'fas fa-play';
+      toggleMusic();
+    });
+
+    // Также разрешаем воспроизведение при клике в любом месте страницы
+    document.addEventListener('click', function() {
+      if (!userInteracted) {
+        userInteracted = true;
+        // Не воспроизводим автоматически, ждем явного нажатия на кнопку
       }
     });
 
