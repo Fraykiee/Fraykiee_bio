@@ -287,79 +287,53 @@
       body {
         padding: 15px;
         align-items: flex-start;
-        padding-top: 40px;
+        padding-top: 60px;
+        padding-bottom: 120px;
+        overflow: auto;
       }
 
       .card {
         padding: 30px 25px;
         width: 100%;
         max-width: 400px;
+        margin-bottom: 20px;
       }
 
       .music-player {
         position: fixed;
         bottom: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 40px);
-        max-width: 400px;
-        right: auto;
+        right: 20px;
+        left: 20px;
+        width: auto;
+        max-width: none;
       }
 
       .music-control {
         bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 20px;
         z-index: 101;
       }
 
       .music-loading {
         bottom: 70px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 20px;
         white-space: nowrap;
       }
 
-      .meta-top {
-        top: 10px;
-        right: 10px;
+      .music-player {
+        z-index: 100;
       }
-
-      .meta {
-        font-size: 12px;
-        padding: 5px 8px;
+      
+      .music-control {
+        z-index: 101;
       }
-
-      .avatar {
-        width: 80px;
-        height: 80px;
-      }
-
-      h1 {
-        font-size: 20px;
-      }
-
-      .role {
-        font-size: 14px;
-        padding: 6px 12px;
-      }
-
-      .bio {
-        font-size: 14px;
-      }
-
-      .s-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+      
+      .music-loading {
+        z-index: 102;
       }
     }
 
     @media (max-width: 480px) {
-      .card {
-        padding: 25px 20px;
-      }
-
       .music-player {
         bottom: 70px;
         padding: 12px;
@@ -391,6 +365,24 @@
 
       .music-control {
         bottom: 15px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .music-player {
+        right: 10px;
+        left: 10px;
+        bottom: 70px;
+      }
+      
+      .music-control {
+        left: 10px;
+        bottom: 15px;
+      }
+      
+      .music-loading {
+        left: 10px;
+        bottom: 65px;
       }
     }
   </style>
@@ -559,7 +551,6 @@
         playPromise.then(() => {
           musicIcon.className = 'fas fa-pause';
           musicLoading.classList.remove('show');
-          console.log('Музыка успешно запущена');
         }).catch(error => {
           console.log('Ошибка воспроизведения:', error);
           musicIcon.className = 'fas fa-play';
@@ -651,7 +642,6 @@
     });
 
     bgMusic.addEventListener('canplaythrough', function() {
-      console.log('Музыка готова к воспроизведению');
       musicLoading.classList.remove('show');
       
       if (bgMusic.duration) {
