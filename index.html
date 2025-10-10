@@ -18,18 +18,20 @@
     }
 
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; overflow: hidden; }
+    html, body { height: 100%; margin: 0; overflow: auto; }
 
     body {
       font-family: 'Inter', sans-serif;
       background-image: var(--bg-image);
       background-size: cover;
       background-position: center;
+      background-attachment: fixed;
       color: var(--accent);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
+      padding: 40px 20px;
+      min-height: 100vh;
     }
 
     .card {
@@ -43,7 +45,60 @@
       width: 420px;
       text-align: center;
       max-width: 100%;
+      margin: 0 auto 40px;
+    }
+
+    .about-section {
+      position: relative;
+      background: rgba(15, 20, 25, 0.55);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      width: 600px;
+      max-width: 100%;
       margin: 0 auto;
+    }
+
+    .about-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .about-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      margin-right: 15px;
+      font-size: 18px;
+      color: var(--accent);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+
+    .about-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 0 0 15px var(--glow-color);
+    }
+
+    .about-content {
+      text-align: left;
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .about-content p {
+      margin-bottom: 15px;
     }
 
     .avatar {
@@ -157,7 +212,7 @@
       z-index: 0;
     }
 
-    .card, .avatar, h1, .role, .bio, .s-btn, .meta { position: relative; z-index: 1; }
+    .card, .avatar, h1, .role, .bio, .s-btn, .meta, .about-section { position: relative; z-index: 1; }
 
     .music-control {
       position: fixed;
@@ -287,16 +342,14 @@
     @media (max-width: 768px) {
       body {
         padding: 20px;
-        align-items: center;
-        justify-content: center;
         overflow: auto;
       }
 
-      .card {
+      .card, .about-section {
         padding: 30px 25px;
         width: 100%;
         max-width: 400px;
-        margin: 0 auto;
+        margin: 0 auto 30px;
       }
 
       .music-player {
@@ -338,8 +391,18 @@
         padding: 15px;
       }
 
-      .card {
+      .card, .about-section {
         padding: 25px 20px;
+      }
+
+      .about-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .about-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
       }
 
       .music-player {
@@ -361,7 +424,7 @@
         padding: 20px;
       }
 
-      .card {
+      .card, .about-section {
         padding: 20px;
         max-width: 350px;
       }
@@ -390,13 +453,6 @@
       .music-loading {
         left: 10px;
         bottom: 65px;
-      }
-    }
-
-    @media (min-height: 600px) {
-      body {
-        align-items: center;
-        justify-content: center;
       }
     }
   </style>
@@ -429,6 +485,7 @@
   <div class="music-loading" id="musicLoading">Loading music...</div>
 
   <canvas class="snow"></canvas>
+  
   <div class="card">
     <div class="meta-top">
       <div class="meta"><i class="fa-solid fa-eye"></i> <span id="viewCount">1487</span></div>
@@ -451,7 +508,33 @@
       <a class="s-btn" href="https://t.me/Fraykiee" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
       <a class="s-btn" href="https://www.tiktok.com/@Fraykiee" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
     </div>
+  </div>
 
+  <div class="about-section">
+    <div class="about-header">
+      <div class="about-icon">
+        <i class="fas fa-user"></i>
+      </div>
+      <h2 class="about-title">About Me</h2>
+    </div>
+    <div class="about-content">
+     
+      <p> Devices 📱 :</p>
+      <p> Samsung Galaxy S20FE Exynos 6/128, ROM - Extreme ROM One UI 7.0, Root - KernelSU Next </p>
+      <p> Redmi 4X 3/32, ROM - Evolution X A12, Non Rooted </p>
+      <p> Nokia Lumia 730 1/8 - Hard Bricked </p>
+      
+      
+      
+      <p> My PC 💻 : </p>
+      <p> MotherBoard - Gigabyte H67M-D2-B3 </p>
+      <p> SSD - Kingston 240GB </p>
+      <p> RAM - 16GB </p>
+      <p> Processor - Intel Celeron G540 2.50 GHz </p>
+      <p> HDD - Seagate Barracuda 1TB </p>
+      <p> GPU - Intel HD Graphics </p>
+      
+    </div>
   </div>
 
   <script>
@@ -534,7 +617,7 @@
             this.saveViews(newViews);
             this.animateCounter(currentViews, newViews);
           }
-        }, 30 * 60 * 1000); // 30 минут
+        }, 30 * 60 * 1000); 
       }
     }
 
