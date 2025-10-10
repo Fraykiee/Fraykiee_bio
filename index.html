@@ -29,7 +29,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-	  padding: 20px;
+      padding: 20px;
     }
 
     .card {
@@ -42,7 +42,9 @@
       padding: 40px;
       width: 420px;
       text-align: center;
-	  max-width: 100%;
+      max-width: 100%;
+      /* Гарантируем центрирование */
+      margin: 0 auto;
     }
 
     .avatar {
@@ -283,12 +285,12 @@
       opacity: 1;
     }
 
+    /* Оптимизация для мобильных устройств */
     @media (max-width: 768px) {
       body {
-        padding: 15px;
-        align-items: flex-start;
-        padding-top: 60px;
-        padding-bottom: 120px;
+        padding: 20px;
+        align-items: center; /* Гарантируем центрирование по вертикали */
+        justify-content: center; /* Гарантируем центрирование по горизонтали */
         overflow: auto;
       }
 
@@ -296,7 +298,7 @@
         padding: 30px 25px;
         width: 100%;
         max-width: 400px;
-        margin-bottom: 20px;
+        margin: 0 auto; /* Центрируем карточку */
       }
 
       .music-player {
@@ -320,6 +322,7 @@
         white-space: nowrap;
       }
 
+      /* Гарантируем, что элементы не перекрываются */
       .music-player {
         z-index: 100;
       }
@@ -333,7 +336,16 @@
       }
     }
 
+    /* Для очень маленьких экранов */
     @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 25px 20px;
+      }
+
       .music-player {
         bottom: 70px;
         padding: 12px;
@@ -348,10 +360,10 @@
       }
     }
 
+    /* Для горизонтальной ориентации на мобильных */
     @media (max-height: 500px) and (max-width: 1000px) {
       body {
-        padding-top: 20px;
-        padding-bottom: 100px;
+        padding: 20px;
       }
 
       .card {
@@ -368,6 +380,7 @@
       }
     }
 
+    /* Гарантируем, что на очень маленьких экранах все помещается */
     @media (max-width: 380px) {
       .music-player {
         right: 10px;
@@ -383,6 +396,14 @@
       .music-loading {
         left: 10px;
         bottom: 65px;
+      }
+    }
+
+    /* Дополнительные гарантии центрирования */
+    @media (min-height: 600px) {
+      body {
+        align-items: center;
+        justify-content: center;
       }
     }
   </style>
@@ -506,6 +527,7 @@
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
 
+    // Флаг для отслеживания первого взаимодействия
     let userInteracted = false;
 
     function formatTime(seconds) {
@@ -573,10 +595,12 @@
 
     function toggleMusic() {
       if (!userInteracted) {
+        // Первое взаимодействие - устанавливаем флаг
         userInteracted = true;
         musicLoading.textContent = 'Loading music...';
         musicLoading.classList.add('show');
         
+        // Пытаемся воспроизвести
         bgMusic.volume = 0.5;
         const playPromise = bgMusic.play();
         
@@ -594,6 +618,7 @@
           });
         }
       } else {
+        // Последующие взаимодействия - обычное переключение
         if (bgMusic.paused) {
           playMusic();
         } else {
@@ -602,9 +627,12 @@
       }
     }
 
+    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
+      // Обновляем прогресс каждые 100мс
       setInterval(updateProgress, 100);
       
+      // Показываем подсказку на мобильных устройствах
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         setTimeout(() => {
           if (!userInteracted) {
@@ -618,6 +646,7 @@
       }
     });
 
+    // Обработчики событий
     progressContainer.addEventListener('click', setProgress);
 
     musicToggle.addEventListener('click', function(event) {
@@ -625,6 +654,7 @@
       toggleMusic();
     });
 
+    // Также разрешаем воспроизведение при клике в любом месте страницы
     document.addEventListener('click', function() {
       if (!userInteracted) {
         userInteracted = true;
