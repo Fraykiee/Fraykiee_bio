@@ -283,21 +283,114 @@
       opacity: 1;
     }
 
-    /* Стили для мобильных устройств */
     @media (max-width: 768px) {
-      .music-player {
-        width: calc(100% - 80px);
-        right: 20px;
+      body {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 40px;
       }
-      
+
+      .card {
+        padding: 30px 25px;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .music-player {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 400px;
+        right: auto;
+      }
+
       .music-control {
         bottom: 20px;
-        left: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 101;
       }
-      
+
       .music-loading {
         bottom: 70px;
-        left: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .meta-top {
+        top: 10px;
+        right: 10px;
+      }
+
+      .meta {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .role {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      .bio {
+        font-size: 14px;
+      }
+
+      .s-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 25px 20px;
+      }
+
+      .music-player {
+        bottom: 70px;
+        padding: 12px;
+      }
+
+      .song-title {
+        font-size: 13px;
+      }
+
+      .time-display {
+        font-size: 10px;
+      }
+    }
+
+    @media (max-height: 500px) and (max-width: 1000px) {
+      body {
+        padding-top: 20px;
+        padding-bottom: 100px;
+      }
+
+      .card {
+        padding: 20px;
+        max-width: 350px;
+      }
+
+      .music-player {
+        bottom: 60px;
+      }
+
+      .music-control {
+        bottom: 15px;
       }
     }
   </style>
@@ -421,7 +514,6 @@
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
 
-    // Флаг для отслеживания первого взаимодействия
     let userInteracted = false;
 
     function formatTime(seconds) {
@@ -473,7 +565,7 @@
           musicIcon.className = 'fas fa-play';
           musicLoading.classList.remove('show');
           
-          musicLoading.textContent = 'Click to play music';
+          musicLoading.textContent = 'Tap to play music';
           musicLoading.classList.add('show');
           
           setTimeout(() => {
@@ -490,12 +582,10 @@
 
     function toggleMusic() {
       if (!userInteracted) {
-        // Первое взаимодействие - устанавливаем флаг
         userInteracted = true;
         musicLoading.textContent = 'Loading music...';
         musicLoading.classList.add('show');
         
-        // Пытаемся воспроизвести
         bgMusic.volume = 0.5;
         const playPromise = bgMusic.play();
         
@@ -513,7 +603,6 @@
           });
         }
       } else {
-        // Последующие взаимодействия - обычное переключение
         if (bgMusic.paused) {
           playMusic();
         } else {
@@ -522,12 +611,9 @@
       }
     }
 
-    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
-      // Обновляем прогресс каждые 100мс
       setInterval(updateProgress, 100);
       
-      // Показываем подсказку на мобильных устройствах
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         setTimeout(() => {
           if (!userInteracted) {
@@ -541,7 +627,6 @@
       }
     });
 
-    // Обработчики событий
     progressContainer.addEventListener('click', setProgress);
 
     musicToggle.addEventListener('click', function(event) {
@@ -549,11 +634,9 @@
       toggleMusic();
     });
 
-    // Также разрешаем воспроизведение при клике в любом месте страницы
     document.addEventListener('click', function() {
       if (!userInteracted) {
         userInteracted = true;
-        // Не воспроизводим автоматически, ждем явного нажатия на кнопку
       }
     });
 
