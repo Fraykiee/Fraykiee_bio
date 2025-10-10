@@ -43,7 +43,6 @@
       width: 420px;
       text-align: center;
       max-width: 100%;
-      /* Гарантируем центрирование */
       margin: 0 auto;
     }
 
@@ -285,12 +284,11 @@
       opacity: 1;
     }
 
-    /* Оптимизация для мобильных устройств */
     @media (max-width: 768px) {
       body {
         padding: 20px;
-        align-items: center; /* Гарантируем центрирование по вертикали */
-        justify-content: center; /* Гарантируем центрирование по горизонтали */
+        align-items: center;
+        justify-content: center;
         overflow: auto;
       }
 
@@ -298,7 +296,7 @@
         padding: 30px 25px;
         width: 100%;
         max-width: 400px;
-        margin: 0 auto; /* Центрируем карточку */
+        margin: 0 auto;
       }
 
       .music-player {
@@ -322,7 +320,6 @@
         white-space: nowrap;
       }
 
-      /* Гарантируем, что элементы не перекрываются */
       .music-player {
         z-index: 100;
       }
@@ -336,7 +333,6 @@
       }
     }
 
-    /* Для очень маленьких экранов */
     @media (max-width: 480px) {
       body {
         padding: 15px;
@@ -360,7 +356,6 @@
       }
     }
 
-    /* Для горизонтальной ориентации на мобильных */
     @media (max-height: 500px) and (max-width: 1000px) {
       body {
         padding: 20px;
@@ -380,7 +375,6 @@
       }
     }
 
-    /* Гарантируем, что на очень маленьких экранах все помещается */
     @media (max-width: 380px) {
       .music-player {
         right: 10px;
@@ -399,7 +393,6 @@
       }
     }
 
-    /* Дополнительные гарантии центрирования */
     @media (min-height: 600px) {
       body {
         align-items: center;
@@ -438,7 +431,7 @@
   <canvas class="snow"></canvas>
   <div class="card">
     <div class="meta-top">
-      <div class="meta"><i class="fa-solid fa-eye"></i> 1487</div>
+      <div class="meta"><i class="fa-solid fa-eye"></i> <span id="viewCount">1487</span></div>
       <div class="meta">#3</div>
     </div>
 
@@ -462,6 +455,91 @@
   </div>
 
   <script>
+    class ViewCounter {
+      constructor() {
+        this.storageKey = 'fraykiee_views';
+        this.visitorKey = 'fraykiee_visitor';
+        this.viewCountElement = document.getElementById('viewCount');
+        this.init();
+      }
+
+      generateVisitorId() {
+        return 'visitor_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+      }
+
+      getCurrentViews() {
+        const stored = localStorage.getItem(this.storageKey);
+        return stored ? parseInt(stored) : 1487; 
+      }
+
+
+      saveViews(count) {
+        localStorage.setItem(this.storageKey, count.toString());
+      }
+
+      isNewVisitor() {
+        const visitorId = localStorage.getItem(this.visitorKey);
+        if (!visitorId) {
+          localStorage.setItem(this.visitorKey, this.generateVisitorId());
+          return true;
+        }
+        return false;
+      }
+
+      updateCounter() {
+        if (this.isNewVisitor()) {
+          const currentViews = this.getCurrentViews();
+          const newViews = currentViews + 1;
+          this.saveViews(newViews);
+          this.animateCounter(currentViews, newViews);
+        } else {
+          this.viewCountElement.textContent = this.formatNumber(this.getCurrentViews());
+        }
+      }
+
+      animateCounter(from, to) {
+        const duration = 1000;
+        const startTime = performance.now();
+        
+        const animate = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          const currentValue = Math.floor(from + (to - from) * easeProgress);
+          
+          this.viewCountElement.textContent = this.formatNumber(currentValue);
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            this.viewCountElement.textContent = this.formatNumber(to);
+          }
+        };
+        
+        requestAnimationFrame(animate);
+      }
+
+      formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      init() {
+        this.updateCounter();
+        
+        setInterval(() => {
+          if (this.isNewVisitor()) {
+            const currentViews = this.getCurrentViews();
+            const newViews = currentViews + 1;
+            this.saveViews(newViews);
+            this.animateCounter(currentViews, newViews);
+          }
+        }, 30 * 60 * 1000); // 30 минут
+      }
+    }
+
+    const viewCounter = new ViewCounter();
+
     const canvas = document.querySelector('.snow');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -527,7 +605,6 @@
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
 
-    // Флаг для отслеживания первого взаимодействия
     let userInteracted = false;
 
     function formatTime(seconds) {
@@ -595,12 +672,10 @@
 
     function toggleMusic() {
       if (!userInteracted) {
-        // Первое взаимодействие - устанавливаем флаг
         userInteracted = true;
         musicLoading.textContent = 'Loading music...';
         musicLoading.classList.add('show');
         
-        // Пытаемся воспроизвести
         bgMusic.volume = 0.5;
         const playPromise = bgMusic.play();
         
@@ -618,7 +693,6 @@
           });
         }
       } else {
-        // Последующие взаимодействия - обычное переключение
         if (bgMusic.paused) {
           playMusic();
         } else {
@@ -627,12 +701,9 @@
       }
     }
 
-    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
-      // Обновляем прогресс каждые 100мс
       setInterval(updateProgress, 100);
       
-      // Показываем подсказку на мобильных устройствах
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         setTimeout(() => {
           if (!userInteracted) {
@@ -646,7 +717,6 @@
       }
     });
 
-    // Обработчики событий
     progressContainer.addEventListener('click', setProgress);
 
     musicToggle.addEventListener('click', function(event) {
@@ -654,7 +724,6 @@
       toggleMusic();
     });
 
-    // Также разрешаем воспроизведение при клике в любом месте страницы
     document.addEventListener('click', function() {
       if (!userInteracted) {
         userInteracted = true;
