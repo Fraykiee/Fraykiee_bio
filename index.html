@@ -423,7 +423,7 @@
     }
 
     .music-player.hidden {
-      transform: translateY(100px);
+      transform: translateY(120%);
       opacity: 0;
       pointer-events: none;
     }
@@ -517,6 +517,7 @@
       body {
         padding: 20px;
         overflow: auto;
+        padding-bottom: 120px;
       }
 
       .card, .about-section {
@@ -528,11 +529,12 @@
 
       .music-player {
         position: fixed;
-        bottom: 80px;
+        bottom: 20px;
         right: 20px;
         left: 20px;
         width: auto;
         max-width: none;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
       }
 
       .music-control {
@@ -563,6 +565,7 @@
     @media (max-width: 480px) {
       body {
         padding: 15px;
+        padding-bottom: 110px;
       }
 
       .card, .about-section {
@@ -580,7 +583,7 @@
       }
 
       .music-player {
-        bottom: 70px;
+        bottom: 15px;
         padding: 12px;
       }
 
@@ -606,6 +609,7 @@
     @media (max-height: 500px) and (max-width: 1000px) {
       body {
         padding: 20px;
+        padding-bottom: 100px;
       }
 
       .card, .about-section {
@@ -614,11 +618,11 @@
       }
 
       .music-player {
-        bottom: 60px;
+        bottom: 10px;
       }
 
       .music-control {
-        bottom: 15px;
+        bottom: 10px;
       }
     }
 
@@ -626,17 +630,17 @@
       .music-player {
         right: 10px;
         left: 10px;
-        bottom: 70px;
+        bottom: 10px;
       }
       
       .music-control {
         left: 10px;
-        bottom: 15px;
+        bottom: 10px;
       }
       
       .music-loading {
         left: 10px;
-        bottom: 65px;
+        bottom: 60px;
       }
 
       .social {
@@ -691,7 +695,6 @@
 
     <div class="roles">
       <div class="role">Furry</div>
-      <div class="role">Cola Zero Lover</div>
     </div>
 
     <div class="divider"></div>
@@ -827,7 +830,6 @@
 
     const viewCounter = new ViewCounter();
 
-    // Снежная анимация
     const canvas = document.querySelector('.snow');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -887,7 +889,6 @@
     }
     loop();
 
-    // Музыкальный плеер
     const bgMusic = document.getElementById('bgMusic');
     const musicToggle = document.getElementById('musicToggle');
     const musicIcon = document.getElementById('musicIcon');
@@ -902,31 +903,80 @@
     let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     let lastScrollTop = 0;
     let scrollTimeout;
+    let isPlayerHidden = false;
 
-    // Функция для скрытия/показа плеера при скролле на мобильных устройствах
     function handleScroll() {
       if (!isMobile) return;
       
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollingDown = scrollTop > lastScrollTop;
+      const scrollDelta = Math.abs(scrollTop - lastScrollTop);
       
-      if (scrollingDown && scrollTop > 100) {
+      if (scrollingDown && scrollDelta > 10 && scrollTop > 50 && !isPlayerHidden) {
         musicPlayer.classList.add('hidden');
-      } else {
+        isPlayerHidden = true;
+      } 
+      else if (!scrollingDown && scrollDelta > 5 && isPlayerHidden) {
         musicPlayer.classList.remove('hidden');
+        isPlayerHidden = false;
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          if (isPlayerHidden === false) {
+            musicPlayer.classList.add('hidden');
+            isPlayerHidden = true;
+          }
+        }, 3000);
       }
       
       lastScrollTop = scrollTop;
       
-      // Очищаем предыдущий таймер и устанавливаем новый
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        musicPlayer.classList.remove('hidden');
-      }, 1500);
+        if (isPlayerHidden === false) {
+          musicPlayer.classList.add('hidden');
+          isPlayerHidden = true;
+        }
+      }, 2000);
     }
 
-    // Добавляем обработчик скролла
-    window.addEventListener('scroll', handleScroll);
+    function showPlayerOnTouch() {
+      if (!isMobile) return;
+      
+      if (isPlayerHidden) {
+        musicPlayer.classList.remove('hidden');
+        isPlayerHidden = false;
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          if (isPlayerHidden === false) {
+            musicPlayer.classList.add('hidden');
+            isPlayerHidden = true;
+          }
+        }, 3000);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    musicToggle.addEventListener('click', function(event) {
+      if (isMobile) {
+        showPlayerOnTouch();
+      }
+    });
+    
+    musicPlayer.addEventListener('click', function(event) {
+      if (isMobile) {
+        showPlayerOnTouch();
+      }
+    });
+
+    if (isMobile) {
+      setTimeout(() => {
+        musicPlayer.classList.add('hidden');
+        isPlayerHidden = true;
+      }, 3000);
+    }
 
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
