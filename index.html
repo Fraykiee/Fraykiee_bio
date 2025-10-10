@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fraykiee - Bio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-image: url('backgrnd.jpg');
+      --accent: #ffffff;
+      --muted: rgba(255, 255, 255, 0.8);
+      --glow-color: rgba(255, 255, 255, 0.85);
+      --blur: 15px;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-image: var(--bg-image);
+      background-size: cover;
+      background-position: center;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+	  padding: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(15, 20, 25, 0.55);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      width: 420px;
+      text-align: center;
+	  max-width: 100%;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 20px var(--glow-color);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    h1 {
+      margin: 10px 0;
+      font-size: 22px;
+      text-shadow: 0 0 15px var(--glow-color);
+    }
+
+    .role, .bio, .meta, .s-btn i {
+      text-shadow: 0 0 10px var(--glow-color);
+    }
+
+    .roles {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .role {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .bio {
+      margin-top: 18px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      margin: 20px 0;
+    }
+
+    .social {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .s-btn {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px transparent;
+    }
+
+    .s-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px var(--glow-color);
+      transform: translateY(-5px) scale(1.1);
+    }
+
+    .meta-top {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .meta {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    canvas.snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card, .avatar, h1, .role, .bio, .s-btn, .meta { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <canvas class="snow"></canvas>
+  <div class="card">
+    <div class="meta-top">
+      <div class="meta"><i class="fa-solid fa-eye"></i> 1487</div>
+      <div class="meta">#3</div>
+    </div>
+
+    <!-- Ускоренная загрузка аватарки -->
+    <div class="avatar"><img src="./pfp.jpg" alt="avatar"></div>
+    <h1>Fraykiee</h1>
+
+    <div class="roles">
+      <div class="role">Furry</div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="bio">Hi, i am Fraykiee 👋, 14 y.o, Cola Zero is the best.</p>
+    <div class="divider"></div>
+    
+    <div class="social">
+      <a class="s-btn" href="https://github.com/Fraykiee" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      <a class="s-btn" href="https://t.me/Fraykiee" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      <a class="s-btn" href="https://www.tiktok.com/@Fraykiee" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+    </div>
+
+  </div>
+
+  <script>
+    const canvas = document.querySelector('.snow');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    const flakes = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function Flake() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.r = Math.random() * 4 + 1;
+      this.d = Math.random() + 1;
+    }
+
+    function drawFlakes() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      for (let i = 0; i < flakes.length; i++) {
+        const f = flakes[i];
+        ctx.moveTo(f.x, f.y);
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+      }
+      ctx.fill();
+      moveFlakes();
+    }
+
+    let angle = 0;
+    function moveFlakes() {
+      angle += 0.01;
+      for (let i = 0; i < flakes.length; i++) {
+        const f = flakes[i];
+        f.y += Math.pow(f.d, 2) + 1;
+        f.x += Math.sin(angle) * 2;
+        if (f.y > h) {
+          flakes[i] = new Flake();
+          flakes[i].y = 0;
+        }
+      }
+    }
+
+    for (let i = 0; i < 100; i++) {
+      flakes.push(new Flake());
+    }
+
+    function loop() {
+      drawFlakes();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>
