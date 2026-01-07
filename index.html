@@ -2,1124 +2,420 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Fraykiee - Bio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <script defer src="https://vercount.one/js"></script>
 
   <style>
     :root {
-      --bg-image: url('backgrnd.jpg');
-      --accent: #ffffff;
-      --muted: rgba(255, 255, 255, 0.8);
-      --glow-color: rgba(255, 255, 255, 0.85);
-      --blur: 15px;
-      --radius: 16px;
-      --github-color: #6e5494;
-      --telegram-color: #0088cc;
-      --tiktok-color: #ff0050;
-      --spotify-color: #1DB954;
+      
+      --bg-image: url('backgrnd.jpg'); 
+      --glass-bg: rgba(18, 20, 26, 0.75); 
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      --blur: 25px;
+      --radius: 28px;
+      
+      
+      --github: #bd93f9;
+      --telegram: #0088cc;
+      --tiktok: #ff0050;
+      --spotify: #1DB954;
+      
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.75);
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; overflow: auto; }
-
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
     body {
+      margin: 0; padding: 0;
       font-family: 'Inter', sans-serif;
       background-image: var(--bg-image);
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
-      color: var(--accent);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
+      background-color: #0f0f0f;
+      color: var(--text-main);
       min-height: 100vh;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
+      overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      padding-bottom: 140px; /* Место под плеер */
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    body::before {
+      content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none;
     }
+
+    .container {
+      width: 100%; max-width: 550px; padding: 20px;
+      display: flex; flex-direction: column; gap: 30px;
+      margin-top: 5vh; opacity: 0; animation: fadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      z-index: 1; position: relative;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
     .card {
-      position: relative;
-      background: rgba(15, 20, 25, 0.55);
+      background: var(--glass-bg);
       backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
       border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      width: 420px;
-      text-align: center;
-      max-width: 100%;
-      margin: 0 auto 40px;
-      transform: translateY(30px);
-      opacity: 0;
-      animation: slideUp 0.8s ease 0.3s forwards;
+      box-shadow: var(--glass-shadow);
+      padding: 40px; text-align: center;
+      position: relative; overflow: visible;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
     }
 
-    @keyframes slideUp {
-      from { 
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to { 
-        transform: translateY(0);
-        opacity: 1;
-      }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-color: rgba(255,255,255,0.2);
     }
 
-    .about-section {
-      position: relative;
-      background: rgba(15, 20, 25, 0.55);
-      backdrop-filter: blur(var(--blur));
-      border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      width: 600px;
-      max-width: 100%;
-      margin: 0 auto;
-      transform: translateY(30px);
-      opacity: 0;
-      animation: slideUp 0.8s ease 0.5s forwards;
-    }
-
-    .about-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .about-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      margin-right: 15px;
-      font-size: 18px;
-      color: var(--accent);
-      box-shadow: 0 0 15px var(--glow-color);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 15px var(--glow-color); }
-      50% { box-shadow: 0 0 25px var(--glow-color); }
-      100% { box-shadow: 0 0 15px var(--glow-color); }
-    }
-
-    .about-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0;
-      text-shadow: 0 0 15px var(--glow-color);
-    }
-
-    .about-content {
-      text-align: left;
-      line-height: 1.6;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .about-content p {
-      margin-bottom: 15px;
-      transform: translateX(-20px);
-      opacity: 0;
-      animation: slideInRight 0.6s ease forwards;
-    }
-
-    .about-content p:nth-child(1) { animation-delay: 0.7s; }
-    .about-content p:nth-child(2) { animation-delay: 0.8s; }
-    .about-content p:nth-child(3) { animation-delay: 0.9s; }
-    .about-content p:nth-child(4) { animation-delay: 1.0s; }
-    .about-content p:nth-child(5) { animation-delay: 1.1s; }
-    .about-content p:nth-child(6) { animation-delay: 1.2s; }
-    .about-content p:nth-child(7) { animation-delay: 1.3s; }
-    .about-content p:nth-child(8) { animation-delay: 1.4s; }
-    .about-content p:nth-child(9) { animation-delay: 1.5s; }
-    .about-content p:nth-child(10) { animation-delay: 1.6s; }
-    .about-content p:nth-child(11) { animation-delay: 1.7s; }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(-20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
+  
+    .avatar-container { position: relative; width: 120px; height: 120px; margin: 0 auto 25px; }
+    
     .avatar {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 16px;
-      border-radius: 50%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 20px var(--glow-color);
-      transform: scale(0);
-      animation: scaleIn 0.8s ease 0.5s forwards;
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.15);
+      overflow: hidden; position: relative; z-index: 2;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s;
+    }
+    
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .avatar-container:hover .avatar {
+      transform: scale(1.15) rotate(3deg);
+      border-color: #fff;
     }
 
-    @keyframes scaleIn {
-      from { transform: scale(0); }
-      to { transform: scale(1); }
+    .avatar-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 140%; height: 140%;
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+      opacity: 0.6; animation: rotate 15s linear infinite; z-index: 1;
     }
-
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      transition: transform 0.5s ease;
-    }
-
-    .avatar:hover img {
-      transform: scale(1.1);
-    }
+    @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
     h1 {
-      margin: 10px 0;
-      font-size: 22px;
-      text-shadow: 0 0 15px var(--glow-color);
+      font-size: 32px; font-weight: 800; margin: 5px 0 10px;
+      background: linear-gradient(135deg, #fff 20%, #b0b0b0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: inline-block; filter: drop-shadow(0 2px 10px rgba(255,255,255,0.2));
     }
 
-    .role, .bio, .meta, .s-btn i {
-      text-shadow: 0 0 10px var(--glow-color);
+    .username-verified { display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .username-verified i { font-size: 20px; color: #3b82f6; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
+
+    .roles { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+    .role-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px; border-radius: 50px;
+      font-size: 14px; font-weight: 600; color: var(--text-muted);
+      transition: all 0.3s; cursor: default;
+    }
+    .role-badge:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff; transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255,255,255,0.1);
     }
 
-    .roles {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 14px 0;
-    }
-
-    .role {
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 8px 14px;
-      border-radius: 999px;
-      color: var(--muted);
-      transform: scale(0);
-      animation: scaleIn 0.5s ease 0.8s forwards;
-    }
-
-    .bio {
-      margin-top: 18px;
-      font-size: 15px;
-      color: var(--muted);
-    }
-
+    .bio { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin: 15px 0; font-weight: 400; }
+    
     .divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      margin: 20px 0;
-      transform: scaleX(0);
-      animation: scaleXIn 0.8s ease 1s forwards;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      margin: 25px 0; width: 80%; margin-left: auto; margin-right: auto;
     }
 
-    @keyframes scaleXIn {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
-
-    .social {
-      display: flex;
-      gap: 18px;
-      justify-content: center;
-      margin-top: 18px;
-    }
+    .social-grid { display: flex; justify-content: center; gap: 18px; margin-top: 15px; }
 
     .s-btn {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
+      width: 54px; height: 54px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: #fff;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 20px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px transparent;
-      transform: translateY(20px);
-      opacity: 0;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative; text-decoration: none;
     }
 
+    .s-btn:hover { transform: translateY(-8px) scale(1.05); }
+    .s-btn.github:hover { background: rgba(189, 147, 249, 0.2); border-color: var(--github); color: var(--github); box-shadow: 0 10px 20px rgba(189, 147, 249, 0.3); }
+    .s-btn.telegram:hover { background: rgba(0, 136, 204, 0.2); border-color: var(--telegram); color: var(--telegram); box-shadow: 0 10px 20px rgba(0, 136, 204, 0.3); }
+    .s-btn.tiktok:hover { background: rgba(255, 0, 80, 0.2); border-color: var(--tiktok); color: var(--tiktok); box-shadow: 0 10px 20px rgba(255, 0, 80, 0.3); }
+    .s-btn.spotify:hover { background: rgba(29, 185, 84, 0.2); border-color: var(--spotify); color: var(--spotify); box-shadow: 0 10px 20px rgba(29, 185, 84, 0.3); }
+
+    
     .s-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s ease;
+      content: attr(data-label);
+      position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: rgba(0,0,0,0.8); color: #fff;
+      padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 8px;
+      white-space: nowrap; opacity: 0; pointer-events: none;
+      transition: all 0.3s ease; backdrop-filter: blur(5px);
     }
+    .s-btn:hover::before { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .s-btn:hover::before {
-      left: 100%;
+    .about-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+    .about-icon { width: 42px; height: 42px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+    .about-content { text-align: left; font-size: 14px; color: var(--text-muted); }
+    .device-group { margin-bottom: 25px; }
+    .device-title { color: #fff; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 16px; }
+    
+    .spec-item {
+        display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; padding: 8px 12px;
+        background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid transparent;
+        transition: all 0.2s;
     }
+    .spec-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); transform: translateX(5px); color: #fff; }
 
-    .s-btn:nth-child(1) { animation: slideUpBtn 0.5s ease 1.2s forwards; }
-    .s-btn:nth-child(2) { animation: slideUpBtn 0.5s ease 1.3s forwards; }
-    .s-btn:nth-child(3) { animation: slideUpBtn 0.5s ease 1.4s forwards; }
-    .s-btn:nth-child(4) { animation: slideUpBtn 0.5s ease 1.5s forwards; }
+   
+    .meta-badges { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; }
+    .meta-tag { font-size: 12px; padding: 5px 10px; background: rgba(0,0,0,0.4); border-radius: 8px; color: rgba(255,255,255,0.8); font-weight: 600; backdrop-filter: blur(5px); }
 
-    @keyframes slideUpBtn {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    canvas.snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+    
+    .player-dock {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      width: 92%; max-width: 480px;
+      background: rgba(22, 22, 22, 0.85);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 16px 24px;
+      display: flex; align-items: center; gap: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      z-index: 1000;
+      opacity: 0; animation: slideUpPlayer 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
     }
+    @keyframes slideUpPlayer { from { transform: translate(-50%, 100px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 
-    .s-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 20px var(--glow-color);
-      transform: translateY(-5px) scale(1.1);
+    .play-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #fff; color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(255,255,255,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+    .play-btn:active { transform: scale(0.9); }
+    .play-btn:hover { box-shadow: 0 0 30px rgba(255,255,255,0.6); }
 
-    .s-btn.github {
-      background: rgba(110, 84, 148, 0.1);
-      border: 1px solid rgba(110, 84, 148, 0.3);
-      color: var(--github-color);
-    }
-
-    .s-btn.github:hover {
-      background: rgba(110, 84, 148, 0.2);
-      box-shadow: 0 0 20px rgba(110, 84, 148, 0.5);
-    }
-
-    .s-btn.telegram {
-      background: rgba(0, 136, 204, 0.1);
-      border: 1px solid rgba(0, 136, 204, 0.3);
-      color: var(--telegram-color);
-    }
-
-    .s-btn.telegram:hover {
-      background: rgba(0, 136, 204, 0.2);
-      box-shadow: 0 0 20px rgba(0, 136, 204, 0.5);
-    }
-
-    .s-btn.tiktok {
-      background: rgba(255, 0, 80, 0.1);
-      border: 1px solid rgba(255, 0, 80, 0.3);
-      color: var(--tiktok-color);
-    }
-
-    .s-btn.tiktok:hover {
-      background: rgba(255, 0, 80, 0.2);
-      box-shadow: 0 0 20px rgba(255, 0, 80, 0.5);
-    }
-
-    .s-btn.spotify {
-      background: rgba(29, 185, 84, 0.1);
-      border: 1px solid rgba(29, 185, 84, 0.3);
-      color: var(--spotify-color);
-    }
-
-    .s-btn.spotify:hover {
-      background: rgba(29, 185, 84, 0.2);
-      box-shadow: 0 0 20px rgba(29, 185, 84, 0.5);
-    }
-
-    .meta-top {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .meta {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      color: var(--muted);
-      transform: scale(0);
-      animation: scaleIn 0.5s ease 0.5s forwards;
-    }
-
-    canvas.snow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .card, .avatar, h1, .role, .bio, .s-btn, .meta, .about-section { position: relative; z-index: 1; }
-
-    .music-control {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 20px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px transparent;
-      cursor: pointer;
-      z-index: 100;
-      transform: scale(0);
-      animation: scaleIn 0.5s ease 1s forwards;
-    }
-
-    .music-control:hover {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 20px var(--glow-color);
-      transform: scale(1.1);
-    }
-
-    .music-player {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 300px;
-      background: rgba(15, 20, 25, 0.7);
-      backdrop-filter: blur(var(--blur));
-      border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-      z-index: 100;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-      transform: scale(0);
-      animation: scaleIn 0.5s ease 1.1s forwards;
-    }
-
-    .music-player.hidden {
-      transform: translateY(120%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .song-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .song-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--glow-color);
-    }
-
-    .song-time {
-      font-size: 12px;
-      color: var(--muted);
-      text-shadow: 0 0 5px var(--glow-color);
-    }
+    .track-info { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: center; user-select: none; }
+    .track-name { font-size: 15px; font-weight: 700; white-space: nowrap; color: #fff; margin-bottom: 4px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+    .track-meta { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; }
 
     .progress-container {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 20px;
+      cursor: pointer; z-index: 10;
     }
-
+    .progress-bar-bg {
+        position: absolute; bottom: 0; left: 24px; right: 24px; height: 4px;
+        background: rgba(255,255,255,0.1); border-radius: 10px 10px 0 0; pointer-events: none;
+        overflow: hidden;
+    }
     .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--glow-color));
-      border-radius: 3px;
-      width: 0%;
-      transition: width 0.1s ease;
-      box-shadow: 0 0 10px var(--glow-color);
-      position: relative;
+      height: 100%; background: linear-gradient(90deg, #fff, #b0b0b0);
+      width: 0%; position: relative; border-radius: 10px;
+      transition: width 0.05s linear;
     }
-
     .progress-bar::after {
-      content: '';
-      position: absolute;
-      right: -4px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 12px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--glow-color);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .progress-container:hover .progress-bar::after {
-      opacity: 1;
-    }
-
-    .time-display {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .music-loading {
-      position: fixed;
-      bottom: 70px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-      z-index: 100;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .music-loading.show {
-      opacity: 1;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 20px;
-        overflow: auto;
-        padding-bottom: 120px;
-      }
-
-      .card, .about-section {
-        padding: 30px 25px;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto 30px;
-      }
-
-      .music-player {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        left: 20px;
-        width: auto;
-        max-width: none;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
-      }
-
-      .music-control {
-        bottom: 20px;
-        left: 20px;
-        z-index: 101;
-      }
-
-      .music-loading {
-        bottom: 70px;
-        left: 20px;
-        white-space: nowrap;
-      }
-
-      .music-player {
-        z-index: 100;
-      }
-      
-      .music-control {
-        z-index: 101;
-      }
-      
-      .music-loading {
-        z-index: 102;
-      }
+        content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 100%;
+        box-shadow: 0 0 15px rgba(255,255,255,0.8);
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 15px;
-        padding-bottom: 110px;
-      }
-
-      .card, .about-section {
-        padding: 25px 20px;
-      }
-
-      .about-header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .about-icon {
-        margin-right: 0;
-        margin-bottom: 10px;
-      }
-
-      .music-player {
-        bottom: 15px;
-        padding: 12px;
-      }
-
-      .song-title {
-        font-size: 13px;
-      }
-
-      .time-display {
-        font-size: 10px;
-      }
-
-      .social {
-        gap: 15px;
-      }
-
-      .s-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 18px;
-      }
-    }
-
-    @media (max-height: 500px) and (max-width: 1000px) {
-      body {
-        padding: 20px;
-        padding-bottom: 100px;
-      }
-
-      .card, .about-section {
-        padding: 20px;
-        max-width: 350px;
-      }
-
-      .music-player {
-        bottom: 10px;
-      }
-
-      .music-control {
-        bottom: 10px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .music-player {
-        right: 10px;
-        left: 10px;
-        bottom: 10px;
-      }
-      
-      .music-control {
-        left: 10px;
-        bottom: 10px;
-      }
-      
-      .music-loading {
-        left: 10px;
-        bottom: 60px;
-      }
-
-      .social {
-        gap: 12px;
-      }
-
-      .s-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-      }
+      .player-dock { width: 94%; bottom: 20px; padding: 14px 18px; }
+      .play-btn { width: 42px; height: 42px; font-size: 16px; }
+      .progress-bar-bg { left: 18px; right: 18px; }
     }
   </style>
 </head>
 <body>
+
   <audio id="bgMusic" loop preload="auto">
-    <source src="background-music.flac" type="audio/flac">
-    <source src="background-music.mp3" type="audio/mpeg">
-    <source src="background-music.ogg" type="audio/ogg">
-    Ваш браузер не поддерживает аудио элемент.
+    <source src="music.flac" type="audio/flac">
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <div class="music-control" id="musicToggle">
-    <i class="fas fa-play" id="musicIcon"></i>
-  </div>
-
-  <div class="music-player" id="musicPlayer">
-    <div class="song-info">
-      <span class="song-title">Pathetic - Society</span>
-    </div>
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div class="time-display">
-      <span id="currentTime">00:00</span>
-      <span id="durationTime">03:34</span>
-    </div>
-  </div>
-
-  <div class="music-loading" id="musicLoading">Loading music...</div>
-
   <canvas class="snow"></canvas>
-  
-  <div class="card">
-    <div class="meta-top">
-      <div class="meta"><i class="fa-solid fa-eye"></i> <span id="viewCount">1487</span></div>
-      <div class="meta">#3</div>
+
+  <div class="container">
+    <div class="card">
+      <div class="meta-badges">
+        <div class="meta-tag" id="busuanzi_container_site_pv" style="display: none;">
+          <i class="fa-solid fa-eye"></i> <span id="busuanzi_value_site_pv">...</span>
+        </div>
+        <div class="meta-tag">#3</div>
+      </div>
+
+      <div class="avatar-container">
+        <div class="avatar-glow"></div>
+        <div class="avatar"><img src="./pfp.jpg" alt="Fraykiee"></div>
+      </div>
+
+      <div class="username-verified">
+        <h1>Fraykiee</h1>
+        <i class="fas fa-certificate" style="margin-left:8px;"></i>
+      </div>
+
+      <div class="roles">
+        <span class="role-badge">Furry</span>
+        <span class="role-badge">Developer</span>
+      </div>
+
+      <div class="divider"></div>
+      <p class="bio">Hi, i am Fraykiee 👋, 14 y.o, Cola Zero is the best.</p>
+      <div class="divider"></div>
+      
+      <div class="social-grid">
+        <a class="s-btn github" href="https://github.com/Fraykiee" target="_blank" data-label="Github"><i class="fa-brands fa-github"></i></a>
+        <a class="s-btn telegram" href="https://t.me/Fraykieee" target="_blank" data-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a class="s-btn tiktok" href="https://www.tiktok.com/@Fraykiee" target="_blank" data-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="s-btn spotify" href="https://open.spotify.com/user/31xr2tud5u6qptscnw6rlhszqr4m?si=d929e6a3a6894ea0" target="_blank" data-label="Spotify"><i class="fa-brands fa-spotify"></i></a>
+      </div>
     </div>
 
-    <div class="avatar"><img src="./pfp.jpg" alt="avatar"></div>
-    <h1>Fraykiee</h1>
-
-    <div class="roles">
-      <div class="role">Furry</div>
-    </div>
-
-    <div class="divider"></div>
-    <p class="bio">Hi, i am Fraykiee 👋, 14 y.o, Cola Zero is the best.</p>
-    <div class="divider"></div>
-    
-    <div class="social">
-      <a class="s-btn github" href="https://github.com/Fraykiee" target="_blank" title="GitHub">
-        <i class="fa-brands fa-github"></i>
-      </a>
-      <a class="s-btn telegram" href="https://t.me/Fraykiee" target="_blank" title="Telegram">
-        <i class="fa-brands fa-telegram"></i>
-      </a>
-      <a class="s-btn tiktok" href="https://www.tiktok.com/@Fraykiee" target="_blank" title="TikTok">
-        <i class="fa-brands fa-tiktok"></i>
-      </a>
-      <a class="s-btn spotify" href="https://open.spotify.com/user/31xr2tud5u6qptscnw6rlhszqr4m?si=d929e6a3a6894ea0" target="_blank" title="Spotify">
-        <i class="fa-brands fa-spotify"></i>
-      </a>
+    <div class="card about-section">
+      <div class="about-header">
+        <div class="about-icon"><i class="fas fa-laptop-code"></i></div>
+        <h2 style="margin:0; font-size: 20px;">Tech Specs</h2>
+      </div>
+      
+      <div class="about-content">
+        <div class="device-group">
+            <span class="device-title"><i class="fas fa-mobile-alt"></i> Devices</span>
+            <div class="spec-item">Samsung S20FE (Exynos) 6/128 • Extreme ROM One UI 7.0 • KSU Next</div>
+            <div class="spec-item">Redmi 4X 3/32 • Axion A15 • Non-Rooted</div>
+            <div class="spec-item">Redmi Note 4X (x2) 3/32 (Snap) • Stock ROM • Non-Rooted</div>
+            <div class="spec-item">Apple iPhone 7 2/32 • iOS 15.8.5 • Dopamine Jailbreak</div>
+            <div class="spec-item">Nokia Lumia 730 1/8 • Win 10 ARM (RT)</div>
+        </div>
+        
+        <div class="device-group" style="margin-bottom:0">
+            <span class="device-title"><i class="fas fa-desktop"></i> My PC</span>
+            <div class="spec-item">Gigabyte H67M-D2-B3 • Intel Core i5 2400</div>
+            <div class="spec-item">16GB RAM • Radeon HD 5770</div>
+            <div class="spec-item">SSD 240GB • HDD 1TB</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="about-section">
-    <div class="about-header">
-      <div class="about-icon">
-        <i class="fas fa-user"></i>
-      </div>
-      <h2 class="about-title">About Me</h2>
+  <div class="player-dock" id="playerDock">
+    <div class="play-btn" id="playPauseBtn">
+      <i class="fas fa-play"></i>
     </div>
-    <div class="about-content">
-     
-      <p> Devices 📱 :</p>
-      <p> Samsung Galaxy S20FE Exynos 6/128, ROM - Extreme ROM One UI 7.0, Root - KernelSU Next </p>
-      <p> Redmi 4X 3/32, ROM - Axion A15, Non Rooted </p>
-      <p> Nokia Lumia 730 1/8 - Windows 10 ARM32 (Windows RT) </p>
-      
-      
-      
-      <p> My PC 💻 : </p>
-      <p> MotherBoard - Gigabyte H67M-D2-B3 </p>
-      <p> SSD - Kingston 240GB </p>
-      <p> RAM - 16GB </p>
-      <p> Processor - Intel Celeron G540 2.50 GHz </p>
-      <p> HDD - Seagate Barracuda 1TB </p>
-      <p> GPU - Radeon HD 5770 </p>
-      
+    
+    <div class="track-info">
+      <div class="track-name">Вышел покурить – пунктир</div>
+      <div class="track-meta">
+        <span id="currentTime">00:00</span>
+        <span id="durationTime">--:--</span>
+      </div>
+    </div>
+
+    <div class="progress-container" id="progressHitBox">
+      <div class="progress-bar-bg">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
     </div>
   </div>
 
   <script>
-    class ViewCounter {
-      constructor() {
-        this.storageKey = 'fraykiee_views';
-        this.visitorKey = 'fraykiee_visitor';
-        this.viewCountElement = document.getElementById('viewCount');
-        this.init();
-      }
+    /* SNOW */
+    const canvas=document.querySelector('.snow'), ctx=canvas.getContext('2d'); let w,h,flakes=[]; function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; } window.addEventListener('resize',resize); resize(); function Flake(){ this.x=Math.random()*w; this.y=Math.random()*h; this.vx=Math.random()-0.5; this.vy=Math.random()+0.5; this.r=Math.random()*2+1; this.o=Math.random()*0.5+0.2; } function initSnow(){ flakes=[]; for(let i=0;i<70;i++) flakes.push(new Flake()); } function drawSnow(){ ctx.clearRect(0,0,w,h); ctx.fillStyle='#fff'; ctx.beginPath(); for(let f of flakes){ ctx.globalAlpha=f.o; ctx.moveTo(f.x,f.y); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); f.x+=f.vx; f.y+=f.vy; if(f.y>h){f.y=0;f.x=Math.random()*w;} } ctx.fill(); requestAnimationFrame(drawSnow); } initSnow(); drawSnow();
 
-      generateVisitorId() {
-        return 'visitor_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
-      }
-
-      getCurrentViews() {
-        const stored = localStorage.getItem(this.storageKey);
-        return stored ? parseInt(stored) : 1487; 
-      }
-
-
-      saveViews(count) {
-        localStorage.setItem(this.storageKey, count.toString());
-      }
-
-      isNewVisitor() {
-        const visitorId = localStorage.getItem(this.visitorKey);
-        if (!visitorId) {
-          localStorage.setItem(this.visitorKey, this.generateVisitorId());
-          return true;
-        }
-        return false;
-      }
-
-      updateCounter() {
-        if (this.isNewVisitor()) {
-          const currentViews = this.getCurrentViews();
-          const newViews = currentViews + 1;
-          this.saveViews(newViews);
-          this.animateCounter(currentViews, newViews);
-        } else {
-          this.viewCountElement.textContent = this.formatNumber(this.getCurrentViews());
-        }
-      }
-
-      animateCounter(from, to) {
-        const duration = 1000;
-        const startTime = performance.now();
-        
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          
-          const easeProgress = 1 - Math.pow(1 - progress, 3);
-          const currentValue = Math.floor(from + (to - from) * easeProgress);
-          
-          this.viewCountElement.textContent = this.formatNumber(currentValue);
-          
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            this.viewCountElement.textContent = this.formatNumber(to);
-          }
-        };
-        
-        requestAnimationFrame(animate);
-      }
-
-      formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      }
-
-      init() {
-        this.updateCounter();
-        
-        setInterval(() => {
-          if (this.isNewVisitor()) {
-            const currentViews = this.getCurrentViews();
-            const newViews = currentViews + 1;
-            this.saveViews(newViews);
-            this.animateCounter(currentViews, newViews);
-          }
-        }, 30 * 60 * 1000); 
-      }
-    }
-
-    const viewCounter = new ViewCounter();
-
-    const canvas = document.querySelector('.snow');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    const flakes = [];
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    function Flake() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.r = Math.random() * 4 + 1;
-      this.d = Math.random() + 1;
-      this.opacity = Math.random() * 0.5 + 0.3;
-    }
-
-    function drawFlakes() {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = 'white';
-      ctx.beginPath();
-      for (let i = 0; i < flakes.length; i++) {
-        const f = flakes[i];
-        ctx.globalAlpha = f.opacity;
-        ctx.moveTo(f.x, f.y);
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
-      }
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      moveFlakes();
-    }
-
-    let angle = 0;
-    function moveFlakes() {
-      angle += 0.01;
-      for (let i = 0; i < flakes.length; i++) {
-        const f = flakes[i];
-        f.y += Math.pow(f.d, 2) + 1;
-        f.x += Math.sin(angle) * 2;
-        if (f.y > h) {
-          flakes[i] = new Flake();
-          flakes[i].y = 0;
-        }
-      }
-    }
-
-    for (let i = 0; i < 100; i++) {
-      flakes.push(new Flake());
-    }
-
-    function loop() {
-      drawFlakes();
-      requestAnimationFrame(loop);
-    }
-    loop();
-
-    const bgMusic = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    const musicIcon = document.getElementById('musicIcon');
-    const musicLoading = document.getElementById('musicLoading');
+    /* PLAYER LOGIC */
+    const audio = document.getElementById('bgMusic');
+    const playBtn = document.getElementById('playPauseBtn');
+    const icon = playBtn.querySelector('i');
     const progressBar = document.getElementById('progressBar');
-    const progressContainer = document.getElementById('progressContainer');
-    const currentTimeEl = document.getElementById('currentTime');
-    const durationTimeEl = document.getElementById('durationTime');
-    const musicPlayer = document.getElementById('musicPlayer');
+    const hitBox = document.getElementById('progressHitBox');
+    const currTimeEl = document.getElementById('currentTime');
+    const durTimeEl = document.getElementById('durationTime');
 
-    let userInteracted = false;
-    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    let lastScrollTop = 0;
-    let scrollTimeout;
-    let isPlayerHidden = false;
+    let isPlaying = false;
+    let isDragging = false;
 
-    function handleScroll() {
-      if (!isMobile) return;
-      
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollingDown = scrollTop > lastScrollTop;
-      const scrollDelta = Math.abs(scrollTop - lastScrollTop);
-      
-      if (scrollingDown && scrollDelta > 10 && scrollTop > 50 && !isPlayerHidden) {
-        musicPlayer.classList.add('hidden');
-        isPlayerHidden = true;
-      } 
-      else if (!scrollingDown && scrollDelta > 5 && isPlayerHidden) {
-        musicPlayer.classList.remove('hidden');
-        isPlayerHidden = false;
-        
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          if (isPlayerHidden === false) {
-            musicPlayer.classList.add('hidden');
-            isPlayerHidden = true;
-          }
-        }, 3000);
-      }
-      
-      lastScrollTop = scrollTop;
-      
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        if (isPlayerHidden === false) {
-          musicPlayer.classList.add('hidden');
-          isPlayerHidden = true;
-        }
-      }, 2000);
+    function fmtTime(s) {
+        if(isNaN(s)) return "00:00";
+        let m = Math.floor(s/60), sec = Math.floor(s%60);
+        return m.toString().padStart(2,'0') + ':' + sec.toString().padStart(2,'0');
     }
 
-    function showPlayerOnTouch() {
-      if (!isMobile) return;
-      
-      if (isPlayerHidden) {
-        musicPlayer.classList.remove('hidden');
-        isPlayerHidden = false;
-        
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          if (isPlayerHidden === false) {
-            musicPlayer.classList.add('hidden');
-            isPlayerHidden = true;
-          }
-        }, 3000);
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    musicToggle.addEventListener('click', function(event) {
-      if (isMobile) {
-        showPlayerOnTouch();
-      }
-    });
-    
-    musicPlayer.addEventListener('click', function(event) {
-      if (isMobile) {
-        showPlayerOnTouch();
-      }
-    });
-
-    if (isMobile) {
-      setTimeout(() => {
-        musicPlayer.classList.add('hidden');
-        isPlayerHidden = true;
-      }, 3000);
-    }
-
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    function updateProgress() {
-      const currentTime = bgMusic.currentTime;
-      const duration = bgMusic.duration;
-      
-      if (duration) {
-        const progressPercent = (currentTime / duration) * 100;
-        progressBar.style.width = `${progressPercent}%`;
-        currentTimeEl.textContent = formatTime(currentTime);
-        durationTimeEl.textContent = formatTime(duration);
-      }
-    }
-
-    function setProgress(e) {
-      if (!userInteracted) return;
-      
-      const width = this.clientWidth;
-      const clickX = e.offsetX;
-      const duration = bgMusic.duration;
-      
-      if (duration) {
-        bgMusic.currentTime = (clickX / width) * duration;
-      }
-    }
-
-    function playMusic() {
-      if (!userInteracted) return;
-      
-      musicLoading.classList.add('show');
-      
-      bgMusic.volume = 0.5;
-      
-      const playPromise = bgMusic.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          musicIcon.className = 'fas fa-pause';
-          musicLoading.classList.remove('show');
-        }).catch(error => {
-          console.log('Ошибка воспроизведения:', error);
-          musicIcon.className = 'fas fa-play';
-          musicLoading.classList.remove('show');
-          
-          musicLoading.textContent = 'Tap to play music';
-          musicLoading.classList.add('show');
-          
-          setTimeout(() => {
-            musicLoading.classList.remove('show');
-          }, 3000);
-        });
-      }
-    }
-
-    function pauseMusic() {
-      bgMusic.pause();
-      musicIcon.className = 'fas fa-play';
-    }
-
-    function toggleMusic() {
-      if (!userInteracted) {
-        userInteracted = true;
-        musicLoading.textContent = 'Loading music...';
-        musicLoading.classList.add('show');
-        
-        bgMusic.volume = 0.5;
-        const playPromise = bgMusic.play();
-        
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            musicIcon.className = 'fas fa-pause';
-            musicLoading.classList.remove('show');
-          }).catch(error => {
-            console.log('Ошибка воспроизведения:', error);
-            musicIcon.className = 'fas fa-play';
-            musicLoading.textContent = 'Error playing music';
-            setTimeout(() => {
-              musicLoading.classList.remove('show');
-            }, 3000);
-          });
-        }
-      } else {
-        if (bgMusic.paused) {
-          playMusic();
+    playBtn.addEventListener('click', () => {
+        if(audio.paused) {
+            audio.play().then(() => { isPlaying = true; icon.className = 'fas fa-pause'; })
+                 .catch(e => console.error(e));
         } else {
-          pauseMusic();
+            audio.pause(); isPlaying = false; icon.className = 'fas fa-play';
         }
-      }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        if (!isDragging && audio.duration) {
+            const pct = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${pct}%`;
+            currTimeEl.innerText = fmtTime(audio.currentTime);
+        }
+    });
+    
+    audio.addEventListener('loadedmetadata', () => {
+        durTimeEl.innerText = fmtTime(audio.duration);
+    });
+
+    function getPct(e) {
+        const rect = hitBox.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let x = clientX - rect.left;
+        let pct = x / rect.width;
+        return Math.max(0, Math.min(1, pct));
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      setInterval(updateProgress, 100);
-      
-      if (isMobile) {
-        setTimeout(() => {
-          if (!userInteracted) {
-            musicLoading.textContent = 'Tap to play music';
-            musicLoading.classList.add('show');
-            setTimeout(() => {
-              musicLoading.classList.remove('show');
-            }, 5000);
-          }
-        }, 2000);
-      }
-    });
+    const startDrag = (e) => {
+        isDragging = true;
+        const pct = getPct(e);
+        progressBar.style.width = `${pct * 100}%`;
+        currTimeEl.innerText = fmtTime(pct * audio.duration);
+    };
 
-    progressContainer.addEventListener('click', setProgress);
+    const moveDrag = (e) => {
+        if(!isDragging) return;
+        e.preventDefault();
+        const pct = getPct(e);
+        progressBar.style.width = `${pct * 100}%`;
+        currTimeEl.innerText = fmtTime(pct * audio.duration);
+    }
 
-    musicToggle.addEventListener('click', function(event) {
-      event.stopPropagation();
-      toggleMusic();
-    });
+    const endDrag = (e) => {
+        if(!isDragging) return;
+        isDragging = false;
+        const pct = parseFloat(progressBar.style.width) / 100;
+        if(audio.duration) {
+            audio.currentTime = pct * audio.duration;
+        }
+    }
 
-    document.addEventListener('click', function() {
-      if (!userInteracted) {
-        userInteracted = true;
-      }
-    });
+    hitBox.addEventListener('mousedown', startDrag);
+    hitBox.addEventListener('touchstart', startDrag, {passive:false});
+    document.addEventListener('mousemove', moveDrag);
+    document.addEventListener('touchmove', moveDrag, {passive:false});
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
 
-    bgMusic.addEventListener('error', function(e) {
-      console.error('Ошибка загрузки музыки:', e);
-      musicLoading.textContent = 'Music load error';
-      musicLoading.classList.add('show');
-      
-      setTimeout(() => {
-        musicLoading.classList.remove('show');
-      }, 3000);
-    });
-
-    bgMusic.addEventListener('canplaythrough', function() {
-      musicLoading.classList.remove('show');
-      
-      if (bgMusic.duration) {
-        durationTimeEl.textContent = formatTime(bgMusic.duration);
-      }
-    });
-
-    bgMusic.addEventListener('timeupdate', updateProgress);
+    audio.volume = 0.5;
+    document.body.addEventListener('click', () => { if(audio.paused && !isPlaying) { /* audio.play(); */ } }, {once:true});
   </script>
 </body>
 </html>
